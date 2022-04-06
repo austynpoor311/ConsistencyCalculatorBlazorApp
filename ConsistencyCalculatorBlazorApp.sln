@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculatorBlazorApp", "ConsistencyCalculatorBlazorApp\ConsistencyCalculatorBlazorApp.csproj", "{6D6695E4-AE57-45AD-8E42-15344CBBCD33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.API", "ConsistencyCalculator.API\ConsistencyCalculator.API.csproj", "{55DB56E8-09FE-4891-BA54-DB65E9F7371A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.UI", "ConsistencyCalculator.UI\ConsistencyCalculator.UI.csproj", "{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6D6695E4-AE57-45AD-8E42-15344CBBCD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D6695E4-AE57-45AD-8E42-15344CBBCD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D6695E4-AE57-45AD-8E42-15344CBBCD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D6695E4-AE57-45AD-8E42-15344CBBCD33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55DB56E8-09FE-4891-BA54-DB65E9F7371A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55DB56E8-09FE-4891-BA54-DB65E9F7371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55DB56E8-09FE-4891-BA54-DB65E9F7371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55DB56E8-09FE-4891-BA54-DB65E9F7371A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
