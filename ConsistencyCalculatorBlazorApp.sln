@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.API",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.UI", "ConsistencyCalculator.UI\ConsistencyCalculator.UI.csproj", "{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Data", "ConsistencyCalculator.Data\ConsistencyCalculator.Data.csproj", "{59B4E76E-8720-4857-B6DF-ED10F60EE322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Shared", "ConsistencyCalculator.Shared\ConsistencyCalculator.Shared.csproj", "{F14E7035-70B2-4697-AF6E-5A19215A64A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B4E76E-8720-4857-B6DF-ED10F60EE322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B4E76E-8720-4857-B6DF-ED10F60EE322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B4E76E-8720-4857-B6DF-ED10F60EE322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B4E76E-8720-4857-B6DF-ED10F60EE322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
