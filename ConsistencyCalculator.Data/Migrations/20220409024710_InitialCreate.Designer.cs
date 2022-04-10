@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsistencyCalculator.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220407184301_InitialCreate")]
+    [Migration("20220409024710_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,127 @@ namespace ConsistencyCalculator.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AwayTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AwayTeamScore")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("GameDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GameResult")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HomeTeamScore")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LeagueAbbreviation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LeagueName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LeagueShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RemoteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Score")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("HomeTeamId");
+
+                    b.ToTable("Games", "dbo");
+                });
+
+            modelBuilder.Entity("ConsistencyCalculator.Models.Entities.GamePlayerStatistics", b =>
+                {
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Assists")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Blocks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FieldGoalAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<double>("FieldGoalPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<int>("FieldGoalsMade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FreeThrowAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<double>("FreeThrowPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<int>("FreeThrowsMade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Minutes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerFouls")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Steals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreePointAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ThreePointPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ThreePointersMade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Turnovers")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId", "GameId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("GamePlayerStatistics", "dbo");
+                });
+
             modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Injury", b =>
                 {
                     b.Property<int>("Id")
@@ -33,20 +154,16 @@ namespace ConsistencyCalculator.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("DateString")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("DateString")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Detail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LongComment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlayerId")
@@ -57,19 +174,15 @@ namespace ConsistencyCalculator.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortComment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Side")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -105,9 +218,8 @@ namespace ConsistencyCalculator.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PositionRemoteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("RemoteId")
                         .IsRequired()
@@ -121,7 +233,7 @@ namespace ConsistencyCalculator.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PositionRemoteId");
+                    b.HasIndex("PositionId");
 
                     b.HasIndex("TeamId");
 
@@ -130,24 +242,25 @@ namespace ConsistencyCalculator.Data.Migrations
 
             modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Position", b =>
                 {
-                    b.Property<string>("RemoteId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Abbreviation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RemoteId");
+                    b.Property<string>("RemoteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Positions", "dbo");
                 });
@@ -375,6 +488,44 @@ namespace ConsistencyCalculator.Data.Migrations
                     b.ToTable("AspNetUserTokens", "dbo");
                 });
 
+            modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Game", b =>
+                {
+                    b.HasOne("ConsistencyCalculator.Models.Entities.Team", "AwayTeam")
+                        .WithMany("AwayGames")
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ConsistencyCalculator.Models.Entities.Team", "HomeTeam")
+                        .WithMany("HomeGames")
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AwayTeam");
+
+                    b.Navigation("HomeTeam");
+                });
+
+            modelBuilder.Entity("ConsistencyCalculator.Models.Entities.GamePlayerStatistics", b =>
+                {
+                    b.HasOne("ConsistencyCalculator.Models.Entities.Game", "Game")
+                        .WithMany("GamePlayerStatistics")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ConsistencyCalculator.Models.Entities.Player", "Player")
+                        .WithMany("GamePlayerStatistics")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Injury", b =>
                 {
                     b.HasOne("ConsistencyCalculator.Models.Entities.Player", "Player")
@@ -390,7 +541,7 @@ namespace ConsistencyCalculator.Data.Migrations
                 {
                     b.HasOne("ConsistencyCalculator.Models.Entities.Position", "Position")
                         .WithMany("Players")
-                        .HasForeignKey("PositionRemoteId")
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -456,8 +607,15 @@ namespace ConsistencyCalculator.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Game", b =>
+                {
+                    b.Navigation("GamePlayerStatistics");
+                });
+
             modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Player", b =>
                 {
+                    b.Navigation("GamePlayerStatistics");
+
                     b.Navigation("Injuries");
                 });
 
@@ -468,6 +626,10 @@ namespace ConsistencyCalculator.Data.Migrations
 
             modelBuilder.Entity("ConsistencyCalculator.Models.Entities.Team", b =>
                 {
+                    b.Navigation("AwayGames");
+
+                    b.Navigation("HomeGames");
+
                     b.Navigation("Players");
                 });
 #pragma warning restore 612, 618

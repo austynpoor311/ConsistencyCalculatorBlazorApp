@@ -53,5 +53,10 @@ namespace ConsistencyCalculator.Shared.Services.Data
         {
             await _httpClient.DeleteAsync($"api/injury/{injuryId}");
         }
+
+        public async Task DeleteAllInjuries()
+        {
+            await _httpClient.DeleteAsync($"api/injury/all");
+        }
     }
 }

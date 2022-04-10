@@ -12,18 +12,15 @@ namespace ConsistencyCalculator.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Key]
-        public string RemoteId { get; set; }    
+        public string RemoteId { get; set; }
 
         public DateTime GameDate { get; set; }
 
         public string Score { get; set; }
 
-        //[ForeignKey("HomeTeam")]
-        //public string HomeTeamId { get; set; }
+        public int HomeTeamId { get; set; }
 
-        //[ForeignKey("AwayTeam")]
-        //public string AwayTeamId { get; set; }
+        public int AwayTeamId { get; set; }
 
         public string HomeTeamScore { get; set; }
 
@@ -31,14 +28,18 @@ namespace ConsistencyCalculator.Models.Entities
 
         public string GameResult { get; set; }
 
-        public string LeagueName { get; set; }
+        public string? LeagueName { get; set; }
 
-        public string LeagueAbbreviation { get; set; }
+        public string? LeagueAbbreviation { get; set; }
 
-        public string LeagueShortName { get; set; }
+        public string? LeagueShortName { get; set; }
 
         public virtual Team AwayTeam { get; set; }
+
         public virtual Team HomeTeam { get; set; }
+
+        public virtual ICollection<GamePlayerStatistics> GamePlayerStatistics { get; set; } = new List<GamePlayerStatistics>();
+
 
     }
 }

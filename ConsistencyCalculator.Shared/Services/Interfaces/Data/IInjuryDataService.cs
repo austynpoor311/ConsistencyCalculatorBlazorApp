@@ -11,5 +11,6 @@ namespace ConsistencyCalculator.Shared.Services.Interfaces.Data
         Task<Injury> AddInjury(Injury injury);
         Task UpdateInjury(Injury injury);
         Task DeleteInjury(int injuryId);
+        Task DeleteAllInjuries();
     }
 }

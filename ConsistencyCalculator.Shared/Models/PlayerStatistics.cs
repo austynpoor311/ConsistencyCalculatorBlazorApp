@@ -95,7 +95,7 @@ namespace ConsistencyCalculator.Models
         public bool IsAllStar { get; set; }
     }
 
-    public class Event
+    public class PlayerStatisticsGame
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -107,7 +107,7 @@ namespace ConsistencyCalculator.Models
         public string AtVs { get; set; }
 
         [JsonPropertyName("gameDate")]
-        public DateTime GameDate { get; set; }
+        public string GameDate { get; set; }
 
         [JsonPropertyName("score")]
         public string Score { get; set; }
@@ -141,12 +141,6 @@ namespace ConsistencyCalculator.Models
 
         [JsonPropertyName("team")]
         public Team Team { get; set; }
-    }
-
-
-    public class Events
-    {
-        public List<Event> Games { get; set; }
     }
 
     public class Category
@@ -233,7 +227,7 @@ namespace ConsistencyCalculator.Models
         public List<string> DisplayNames { get; set; }
 
         [JsonPropertyName("events")]
-        public Events Events { get; set; }
+        public Dictionary<string, PlayerStatisticsGame> Games { get; set; }
 
         [JsonPropertyName("seasonTypes")]
         public List<SeasonType> SeasonTypes { get; set; }

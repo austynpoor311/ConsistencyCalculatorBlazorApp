@@ -19,5 +19,10 @@ namespace ConsistencyCalculator.Shared.Services.Api
         {
             await _httpClient.GetAsync("api/player/nba/addorupdate");
         }
+
+        public async Task AddOrUpdateNbaPlayerInjuries()
+        {
+            await _httpClient.GetAsync("api/injury/nba/addorupdate");
+        }
     }
 }

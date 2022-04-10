@@ -13,5 +13,6 @@ namespace ConsistencyCalculator.Data.Repositories.Interfaces
         Injury AddInjury(Injury injury);
         Injury UpdateInjury(Injury injury);
         void DeleteInjury(int injuryId);
+        void DeleteAllInjuries();
     }
 }

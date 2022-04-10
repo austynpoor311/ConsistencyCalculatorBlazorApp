@@ -7,7 +7,6 @@ namespace ConsistencyCalculator.Models.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Key]
         public string RemoteId { get; set; }
         public string Name { get; set; }
         public string Abbreviation { get; set; }

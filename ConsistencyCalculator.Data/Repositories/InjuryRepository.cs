@@ -73,5 +73,13 @@ namespace ConsistencyCalculator.Data.Repositories
             _appDbContext.Injuries.Remove(foundInjury);
             _appDbContext.SaveChanges();
         }
+
+        public void DeleteAllInjuries()
+        {
+            var injuries = _appDbContext.Injuries;
+
+            _appDbContext.Injuries.RemoveRange(injuries);
+            _appDbContext.SaveChanges();
+        }
     }
 }

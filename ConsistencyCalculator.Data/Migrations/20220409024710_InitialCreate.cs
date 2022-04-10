@@ -58,15 +58,15 @@ namespace ConsistencyCalculator.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    RemoteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Abbreviation = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RemoteId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Abbreviation = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Positions", x => x.RemoteId);
+                    table.PrimaryKey("PK_Positions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,8 +77,8 @@ namespace ConsistencyCalculator.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RemoteId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Abbreviation = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Abbreviation = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,6 +203,43 @@ namespace ConsistencyCalculator.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Games",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RemoteId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GameDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Score = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HomeTeamId = table.Column<int>(type: "int", nullable: false),
+                    AwayTeamId = table.Column<int>(type: "int", nullable: false),
+                    HomeTeamScore = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AwayTeamScore = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GameResult = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LeagueName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LeagueAbbreviation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LeagueShortName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Games", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Games_Teams_AwayTeamId",
+                        column: x => x.AwayTeamId,
+                        principalSchema: "dbo",
+                        principalTable: "Teams",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Games_Teams_HomeTeamId",
+                        column: x => x.HomeTeamId,
+                        principalSchema: "dbo",
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Players",
                 schema: "dbo",
                 columns: table => new
@@ -210,24 +247,24 @@ namespace ConsistencyCalculator.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RemoteId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     Height = table.Column<double>(type: "float", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: false),
-                    PositionRemoteId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PositionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Players_Positions_PositionRemoteId",
-                        column: x => x.PositionRemoteId,
+                        name: "FK_Players_Positions_PositionId",
+                        column: x => x.PositionId,
                         principalSchema: "dbo",
                         principalTable: "Positions",
-                        principalColumn: "RemoteId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Players_Teams_TeamId",
@@ -236,6 +273,48 @@ namespace ConsistencyCalculator.Data.Migrations
                         principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GamePlayerStatistics",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    Minutes = table.Column<int>(type: "int", nullable: false),
+                    FieldGoalAttempts = table.Column<int>(type: "int", nullable: false),
+                    FieldGoalsMade = table.Column<int>(type: "int", nullable: false),
+                    FieldGoalPercentage = table.Column<double>(type: "float", nullable: false),
+                    ThreePointAttempts = table.Column<int>(type: "int", nullable: false),
+                    ThreePointersMade = table.Column<int>(type: "int", nullable: false),
+                    ThreePointPercentage = table.Column<double>(type: "float", nullable: false),
+                    FreeThrowAttempts = table.Column<int>(type: "int", nullable: false),
+                    FreeThrowsMade = table.Column<int>(type: "int", nullable: false),
+                    FreeThrowPercentage = table.Column<double>(type: "float", nullable: false),
+                    Rebounds = table.Column<int>(type: "int", nullable: false),
+                    Assists = table.Column<int>(type: "int", nullable: false),
+                    Blocks = table.Column<int>(type: "int", nullable: false),
+                    Steals = table.Column<int>(type: "int", nullable: false),
+                    PlayerFouls = table.Column<int>(type: "int", nullable: false),
+                    Turnovers = table.Column<int>(type: "int", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GamePlayerStatistics", x => new { x.PlayerId, x.GameId });
+                    table.ForeignKey(
+                        name: "FK_GamePlayerStatistics_Games_GameId",
+                        column: x => x.GameId,
+                        principalSchema: "dbo",
+                        principalTable: "Games",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GamePlayerStatistics_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalSchema: "dbo",
+                        principalTable: "Players",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -249,7 +328,7 @@ namespace ConsistencyCalculator.Data.Migrations
                     LongComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShortComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateString = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateString = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -315,16 +394,34 @@ namespace ConsistencyCalculator.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GamePlayerStatistics_GameId",
+                schema: "dbo",
+                table: "GamePlayerStatistics",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_AwayTeamId",
+                schema: "dbo",
+                table: "Games",
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_HomeTeamId",
+                schema: "dbo",
+                table: "Games",
+                column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Injuries_PlayerId",
                 schema: "dbo",
                 table: "Injuries",
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_PositionRemoteId",
+                name: "IX_Players_PositionId",
                 schema: "dbo",
                 table: "Players",
-                column: "PositionRemoteId");
+                column: "PositionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_TeamId",
@@ -356,6 +453,10 @@ namespace ConsistencyCalculator.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
+                name: "GamePlayerStatistics",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "Injuries",
                 schema: "dbo");
 
@@ -365,6 +466,10 @@ namespace ConsistencyCalculator.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Games",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Data"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Shared", "ConsistencyCalculator.Shared\ConsistencyCalculator.Shared.csproj", "{F14E7035-70B2-4697-AF6E-5A19215A64A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculatorFx", "ConsistencyCalculatorFx\ConsistencyCalculatorFx.csproj", "{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14E7035-70B2-4697-AF6E-5A19215A64A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

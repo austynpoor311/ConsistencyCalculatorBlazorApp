@@ -13,11 +13,13 @@ namespace ConsistencyCalculator.API.Controllers
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IPlayerDataService _playerDataService;
+        private readonly IGameRepository _gameRepository;
 
-        public GameStatisticsController(IPlayerRepository playerRepository, IPlayerDataService playerDataService)
+        public GameStatisticsController(IPlayerRepository playerRepository, IPlayerDataService playerDataService, IGameRepository gameRepository)
         {
             _playerRepository = playerRepository;
             _playerDataService = playerDataService;
+            _gameRepository = gameRepository;
         }
 
         [HttpGet("nba/addorupdate")]
@@ -60,17 +62,19 @@ namespace ConsistencyCalculator.API.Controllers
                         data = JsonSerializer.Deserialize<PlayerStatistics>(responseBody);
                     }
                 }
+
+
             }
 
-            var recentGames = data.SeasonTypes
-                .Where(st => st.DisplayName == "2021-22 Regular Season")
-                .SelectMany(st => st.Categories)
-                .SelectMany(c => c.Events).ToList();
+            //var recentGames = data.SeasonTypes
+            //    .Where(st => st.DisplayName == "2021-22 Regular Season")
+            //    .SelectMany(st => st.Categories)
+            //    .SelectMany(c => c.Events).ToList();
 
-            var statAverages = data.SeasonTypes.Where(st => st.DisplayName == "2021-22 Regular Season")
-                .Select(st => st.Summary)
-                .SelectMany(s => s.Stats).Where(stats => stats.DisplayName == "Averages")
-                .SelectMany(a => a.Stats).ToList();
+            //var statAverages = data.SeasonTypes.Where(st => st.DisplayName == "2021-22 Regular Season")
+            //    .Select(st => st.Summary)
+            //    .SelectMany(s => s.Stats).Where(stats => stats.DisplayName == "Averages")
+            //    .SelectMany(a => a.Stats).ToList();
 
             //var players = await _playerDataService.GetAllPlayers();
             //var playerSelectListItems = players.Select(t => new SelectListItem

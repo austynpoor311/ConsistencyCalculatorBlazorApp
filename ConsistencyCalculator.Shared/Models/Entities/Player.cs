@@ -20,5 +20,6 @@ namespace ConsistencyCalculator.Models.Entities
         public virtual ICollection<Injury> Injuries { get; set; } = new List<Injury>();
         public virtual Team Team { get; set; }
         public virtual Position Position { get; set; }
+        public virtual ICollection<GamePlayerStatistics> GamePlayerStatistics { get; set; } = new List<GamePlayerStatistics>();
     }
 }

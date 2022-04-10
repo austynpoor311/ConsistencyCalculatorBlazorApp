@@ -26,6 +26,14 @@ namespace ConsistencyCalculator.Data.Repositories
             return _appDbContext.Teams.Include(t => t.Players).FirstOrDefault(t => t.Id == teamId);
         }
 
+
+        public Team GetTeamByRemoteId(string remoteId)
+        {
+            return _appDbContext.Teams
+                .Include(t => t.Players)
+                .FirstOrDefault(p => p.RemoteId == remoteId);
+        }
+
         public Team AddTeam(Team team)
         {
             var addedEntity = _appDbContext.Teams.Add(team);

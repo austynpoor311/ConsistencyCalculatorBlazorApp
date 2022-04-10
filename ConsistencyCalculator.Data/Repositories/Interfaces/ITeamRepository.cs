@@ -10,6 +10,7 @@ namespace ConsistencyCalculator.Data.Repositories.Interfaces
     {
         IEnumerable<Team> GetAllTeams();
         Team GetTeamById(int teamId);
+        Team GetTeamByRemoteId(string remoteId);
         Team AddTeam(Team team);
         Team UpdateTeam(Team team);
         void DeleteTeam(int teamId);

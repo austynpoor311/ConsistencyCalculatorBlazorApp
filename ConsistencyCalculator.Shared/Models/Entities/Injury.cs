@@ -9,14 +9,14 @@ namespace ConsistencyCalculator.Models.Entities
     {
         public int Id { get; set; }
         public string RemoteId { get; set; }
-        public string LongComment { get; set; }
-        public string ShortComment { get; set; }
-        public string Status { get; set; }
-        public string DateString { get; set; }
-        public string Type { get; set; }
-        public string Location { get; set; }
-        public string Detail { get; set; }
-        public string Side { get; set; }
+        public string? LongComment { get; set; }
+        public string? ShortComment { get; set; }
+        public string? Status { get; set; }
+        public DateTime? DateString { get; set; }
+        public string? Type { get; set; }
+        public string? Location { get; set; }
+        public string? Detail { get; set; }
+        public string? Side { get; set; }
         public virtual Player Player { get; set; }
     }
 }

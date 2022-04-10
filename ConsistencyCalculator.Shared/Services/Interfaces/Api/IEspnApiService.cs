@@ -7,5 +7,6 @@ namespace ConsistencyCalculator.Shared.Services.Interfaces.Api
     public interface IEspnApiService
     { 
         Task AddOrUpdateNbaPlayersAsync();
+        Task AddOrUpdateNbaPlayerInjuries();
     }
 }

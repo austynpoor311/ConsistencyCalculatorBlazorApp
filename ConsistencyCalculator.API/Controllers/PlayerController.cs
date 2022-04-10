@@ -165,7 +165,7 @@ namespace ConsistencyCalculator.Api.Controllers
                                 LongComment = i.LongComment,
                                 ShortComment = i.ShortComment,
                                 Status = i.Status,
-                                DateString = i.Date,
+                                DateString = DateTime.Parse(i.Date),
                                 Type = i.Details.Type,
                                 Location = i.Details.Location,
                                 Side = i.Details.Side,
