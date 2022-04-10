@@ -82,8 +82,8 @@ namespace ConsistencyCalculator.Api.Controllers
             return NoContent();//success
         }
 
-        [HttpGet("nba/addorupdate")]
-        public async Task AddOrUpdateNbaGames()
+        [HttpGet("nba/add")]
+        public async Task AddNbaGames()
         {
             //positionIds: 3 = guard, 5 = small forward, 9 = center
             var data = new PlayerStatistics();

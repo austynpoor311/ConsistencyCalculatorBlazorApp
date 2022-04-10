@@ -16,12 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsistencyCalculator.Data\ConsistencyCalculator.Data.csproj" />
     <ProjectReference Include="..\ConsistencyCalculator.Shared\ConsistencyCalculator.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

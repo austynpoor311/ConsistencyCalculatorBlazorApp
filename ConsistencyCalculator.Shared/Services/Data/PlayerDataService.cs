@@ -26,7 +26,7 @@ namespace ConsistencyCalculator.Shared.Services.Data
                 (await _httpClient.GetStreamAsync($"api/player/{playerId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<Player> GetPlayerRemoteById(int remoteId)
+        public async Task<Player> GetPlayerRemoteById(string remoteId)
         {
             return await JsonSerializer.DeserializeAsync<Player>
                 (await _httpClient.GetStreamAsync($"api/player/remote/{remoteId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });

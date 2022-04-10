@@ -1,25 +1,91 @@
 ﻿using ConsistencyCalculator.Data.Repositories.Interfaces;
 using ConsistencyCalculator.Models;
-using ConsistencyCalculator.Shared.Services.Interfaces.Data;
+using ConsistencyCalculator.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
-namespace ConsistencyCalculator.API.Controllers
+namespace ConsistencyCalculator.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameStatisticsController : Controller
+    public class GamePlayerStatisticsController : Controller
     {
+        private readonly IGamePlayerStatisticsRepository _gamePlayerStatisticsRepository;
         private readonly IPlayerRepository _playerRepository;
-        private readonly IPlayerDataService _playerDataService;
-        private readonly IGameRepository _gameRepository;
+        private readonly ITeamRepository _teamRepository;
 
-        public GameStatisticsController(IPlayerRepository playerRepository, IPlayerDataService playerDataService, IGameRepository gameRepository)
+        public GamePlayerStatisticsController(IGamePlayerStatisticsRepository gamePlayerStatisticsRepository, IPlayerRepository playerRepository, ITeamRepository teamRepository)
         {
+            _gamePlayerStatisticsRepository = gamePlayerStatisticsRepository;
             _playerRepository = playerRepository;
-            _playerDataService = playerDataService;
-            _gameRepository = gameRepository;
+            _teamRepository = teamRepository;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllGamePlayerStatisticss()
+        {
+            return Ok(_gamePlayerStatisticsRepository.GetAllGamePlayerStatistics());
+        }
+
+        [HttpGet("{playerId}/{gameId}")]
+        public IActionResult GetGamePlayerStatisticsById(int playerId, int gameId)
+        {
+            return Ok(_gamePlayerStatisticsRepository.GetGamePlayerStatisticsById(playerId, gameId));
+        }
+
+        [HttpGet("player/{id}")]
+        public IActionResult GetGamePlayerStatisticsById(int id)
+        {
+            return Ok(_gamePlayerStatisticsRepository.GetGamePlayerStatisticsByPlayerId(id));
+        }
+
+        [HttpGet("game/{id}")]
+        public IActionResult GetGamePlayerStatisticsByGameId(int id)
+        {
+            return Ok(_gamePlayerStatisticsRepository.GetGamePlayerStatisticsByGameId(id));
+        }
+
+        [HttpPost]
+        public IActionResult CreateGamePlayerStatistics([FromBody] GamePlayerStatistics gamePlayerStatistics)
+        {
+            if (gamePlayerStatistics == null)
+                return BadRequest();
+
+            var createdGamePlayerStatistics = _gamePlayerStatisticsRepository.AddGamePlayerStatistics(gamePlayerStatistics);
+
+            return Created("GamePlayerStatistics", createdGamePlayerStatistics);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateGamePlayerStatistics([FromBody] GamePlayerStatistics gamePlayerStatistics)
+        {
+            if (gamePlayerStatistics == null)
+                return BadRequest();
+
+            var gameplayerstatisticsToUpdate = _gamePlayerStatisticsRepository.GetGamePlayerStatisticsById(gamePlayerStatistics.Player.Id, gamePlayerStatistics.Game.Id);
+
+            if (gameplayerstatisticsToUpdate == null)
+                return NotFound();
+
+            _gamePlayerStatisticsRepository.UpdateGamePlayerStatistics(gamePlayerStatistics);
+
+            return NoContent(); //success
+        }
+
+        [HttpDelete("{playerId}/{gameId}")]
+        public IActionResult DeleteGamePlayerStatistics(int playerId, int gameId)
+        {
+            if (playerId == 0 || gameId == 0)
+                return BadRequest();
+
+            var gameplayerstatisticsToDelete = _gamePlayerStatisticsRepository.GetGamePlayerStatisticsById(playerId, gameId);
+            if (gameplayerstatisticsToDelete == null)
+                return NotFound();
+
+            _gamePlayerStatisticsRepository.DeleteGamePlayerStatistics(playerId, gameId);
+
+            return NoContent();//success
         }
 
         [HttpGet("nba/addorupdate")]
@@ -33,7 +99,7 @@ namespace ConsistencyCalculator.API.Controllers
             // If you are using .NET Core 3.0+ you can replace `~DecompressionMethods.None` to `DecompressionMethods.All`
             handler.AutomaticDecompression = ~DecompressionMethods.None;
 
-            foreach(var player in players)
+            foreach (var player in players)
             {
                 // In production code, don't destroy the HttpClient through using, but better use IHttpClientFactory factory or at least reuse an existing HttpClient instance
                 // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests
@@ -62,8 +128,6 @@ namespace ConsistencyCalculator.API.Controllers
                         data = JsonSerializer.Deserialize<PlayerStatistics>(responseBody);
                     }
                 }
-
-
             }
 
             //var recentGames = data.SeasonTypes
