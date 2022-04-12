@@ -147,7 +147,9 @@ namespace ConsistencyCalculator.Api.Controllers
                         }
                     }
 
-                    if (!addedPlayerIds.Contains(Int32.Parse(player.Id)) && !players.Any(p => p.RemoteId == player.Id))
+                    var playerExists = players.Any(p => p.RemoteId == player.Id);
+
+                    if (!playerExists && !addedPlayerIds.Contains(Int32.Parse(player.Id)) && !players.Any(p => p.RemoteId == player.Id))
                     {
                         var newPlayer = new Player
                         {

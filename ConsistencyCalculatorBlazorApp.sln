@@ -5,13 +5,13 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.API", "ConsistencyCalculator.API\ConsistencyCalculator.API.csproj", "{55DB56E8-09FE-4891-BA54-DB65E9F7371A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.UI", "ConsistencyCalculator.UI\ConsistencyCalculator.UI.csproj", "{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.UI", "ConsistencyCalculator.UI\ConsistencyCalculator.UI.csproj", "{4A7F9BAC-925F-4702-AC6B-55C62C81A3F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Data", "ConsistencyCalculator.Data\ConsistencyCalculator.Data.csproj", "{59B4E76E-8720-4857-B6DF-ED10F60EE322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.Data", "ConsistencyCalculator.Data\ConsistencyCalculator.Data.csproj", "{59B4E76E-8720-4857-B6DF-ED10F60EE322}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculator.Shared", "ConsistencyCalculator.Shared\ConsistencyCalculator.Shared.csproj", "{F14E7035-70B2-4697-AF6E-5A19215A64A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculator.Shared", "ConsistencyCalculator.Shared\ConsistencyCalculator.Shared.csproj", "{F14E7035-70B2-4697-AF6E-5A19215A64A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsistencyCalculatorFx", "ConsistencyCalculatorFx\ConsistencyCalculatorFx.csproj", "{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsistencyCalculatorFx", "ConsistencyCalculatorFx\ConsistencyCalculatorFx.csproj", "{DE7D9A3E-B8E6-431F-8DEF-7E3741991829}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

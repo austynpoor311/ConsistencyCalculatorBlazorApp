@@ -1,0 +1,371 @@
+﻿@page "/playerstats"
+@using ConsistencyCalculator.Models.Entities
+@using ConsistencyCalculator.Shared.Services.Interfaces.Data
+@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<PageTitle>Player Stats</PageTitle>
+
+@if (PlayerSelectListItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="select mb-3">
+        <select @onchange="PlayerChanged">
+            @foreach (var item in PlayerSelectListItems)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+}
+
+
+@if (Player == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3 class="mb-3">Game Log</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>Score</th>
+                <th>MIN</th>
+                <th>FG</th>
+                <th>FG%</th>
+                <th>3PT</th>
+                <th>3P%</th>
+                <th>FT</th>
+                <th>FT%</th>
+                <th>REB</th>
+                <th>AST</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>PF</th>
+                <th>TO</th>
+                <th>PTS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in GamePlayerStatistics)
+            {
+                <tr>
+                    <td>@stat.Game.GameDate.DayOfWeek @stat.Game.GameDate.ToString("MM/dd")</td>
+                    <td>@stat.Game.HomeTeam.Name</td>
+                    <td>@stat.Game.AwayTeam.Name</td>
+                    <td>@stat.Game.Score</td>
+                    <td>@stat.Minutes</td>
+                    <td>@stat.FieldGoalsMade-@stat.FieldGoalAttempts</td>
+                    <td>@stat.FieldGoalPercentage.ToString("0.0")</td>
+                    <td>@stat.ThreePointersMade-@stat.ThreePointAttempts</td>
+                    <td>@stat.ThreePointPercentage.ToString("0.0")</td>
+                    <td>@stat.FreeThrowsMade-@stat.FreeThrowAttempts</td>
+                    <td>@stat.FreeThrowPercentage.ToString("0.0")</td>
+                    <td>@stat.Rebounds</td>
+                    <td>@stat.Assists</td>
+                    <td>@stat.Blocks</td>
+                    <td>@stat.Steals</td>
+                    <td>@stat.PlayerFouls</td>
+                    <td>@stat.Turnovers</td>
+                    <td>@stat.Points</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mb-3">
+        <label for="numberofgames">Number of Games:</label>
+        <select value="@NumberOfGames" @onchange="UpdateNumberOfGames" name="numberofgames">
+            @foreach (var item in LastGamesItems)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="rebounds">Rebounds:</label>
+        <input value="@Rebounds" @onchange="ReboundsChanged" />
+
+        <label for="assists">Assists:</label>
+        <input value="@Assists" @onchange="AssistsChanged" />
+
+        <label for="points">Points:</label>
+        <input value="@Points" @onchange="PointsChanged" />
+    </div>
+
+    <div class="col-lg-6">
+        <div class="row">
+            Rebounds: @ReboundsPercent.ToString("0.0")% (@ReboundsHitCount / L @NumberOfGames)
+        </div>
+        <div class="row">
+            Assists: @AssistsPercent.ToString("0.0")% (@AssistsHitCount / L @NumberOfGames)
+        </div>
+        <div class="row">
+            Points: @PointsPercent.ToString("0.0")% (@PointsHitCount / L @NumberOfGames)
+        </div>
+    </div>
+
+
+@*    <DataTable TModel="GamePlayerStatistics"
+           Items="GamePlayerStatistics.OrderByDescending(gps => gps.Game.GameDate).ToList()"
+           UsePaging="true"
+           PageSize="@PageSize"
+           UsePageSizeSelector="true"
+           Styles="TableStyle.Striped">
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Game.GameDate"
+                     CustomTitle="Date" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Game.HomeTeam.Name"
+                     CustomTitle="Home Team" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Game.AwayTeam.Name"
+                     CustomTitle="Away Team" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Game.Score"
+                     CustomTitle="Score" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Minutes"
+                     CustomTitle="MIN" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FieldGoalsMade"
+                     CustomTitle="FG" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FieldGoalAttempts"
+                     CustomTitle="FGA" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FieldGoalPercentage"
+                     CustomTitle="FG %" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.ThreePointersMade"
+                     CustomTitle="3P" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.ThreePointAttempts"
+                     CustomTitle="3PA" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.ThreePointPercentage"
+                     CustomTitle="3P %" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FreeThrowsMade"
+                     CustomTitle="FT" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FreeThrowAttempts"
+                     CustomTitle="FTA" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.FreeThrowPercentage"
+                     CustomTitle="FT %" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Rebounds"
+                     CustomTitle="REB" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Assists"
+                     CustomTitle="AST" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Blocks"
+                     CustomTitle="BLK" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Steals"
+                     CustomTitle="STL" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.PlayerFouls"
+                     CustomTitle="PF" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Turnovers"
+                     CustomTitle="TO" />
+        <DataTableColumn TModel="GamePlayerStatistics"
+                     Property="(gps) => gps.Points"
+                     CustomTitle="PTS" />
+
+    </DataTable>*@
+}
+
+
+@code {
+    [Inject]
+    public IPlayerDataService PlayerDataService { get; set; }
+
+    [Inject]
+    public IGamePlayerStatisticsDataService GamePlayerStatisticsDataService { get; set; }
+
+    public int PlayerId { get; set; } 
+
+    public Player Player { get; set; }
+
+    public List<Player> Players { get; set; } = new List<Player>();
+
+    public List<GamePlayerStatistics> GamePlayerStatistics { get; set; }
+
+    public GamePlayerStatistics GamePlayerStatistic { get; set; }
+
+    public List<SelectListItem> PlayerSelectListItems { get; set; }
+
+    public List<SelectListItem> LastGamesItems { get; set; }
+
+    public double Points { get; set; } = 20.5;
+
+    public double Assists { get; set; } = 5.5;
+
+    public double Rebounds { get; set; } = 8.5;
+
+    public double AssistsPercent { get; set; }
+
+    public double ReboundsPercent { get; set; }
+
+    public double PointsPercent { get; set; }
+
+    public int AssistsHitCount { get; set; }
+
+    public int ReboundsHitCount { get; set; }
+
+    public int PointsHitCount { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<ChangeEventArgs> ValueChanged { get; set; }
+
+    public int NumberOfGames { get; set; } = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LastGamesItems = Enumerable.Range(1, 20).Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+
+        var players = await PlayerDataService.GetAllPlayers();
+        players = players.OrderBy(p => p.FullName).ToList();
+
+        PlayerId = players.Select(p => p.Id).FirstOrDefault();
+
+        PlayerSelectListItems = players.Select(p => new SelectListItem
+        {
+            Value = p.Id.ToString(),
+            Text = p.FullName
+        }).ToList();
+
+        UpdatePlayerStatistics();
+    }
+
+    async Task PlayerChanged(ChangeEventArgs e)
+    {
+        PlayerId = Int32.Parse(e.Value.ToString());
+        UpdatePlayerStatistics();
+    }
+    async Task UpdatePlayerStatistics()
+    {
+        GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetTopGamePlayerStatisticsByPlayerId(PlayerId, NumberOfGames)).ToList();
+        Player = await PlayerDataService.GetPlayerById(PlayerId);
+        await PointsChanged(new ChangeEventArgs
+            {
+                Value = Points
+            });
+
+        await ReboundsChanged(new ChangeEventArgs
+            {
+                Value = Rebounds
+            });
+
+        await AssistsChanged(new ChangeEventArgs
+            {
+                Value = Assists
+            });
+        StateHasChanged();
+    }
+
+    async Task ReboundsChanged(ChangeEventArgs e)
+    {
+        Rebounds = Double.Parse(e.Value.ToString());
+        ReboundsHitCount = GamePlayerStatistics.Where(ps => ps.Rebounds >= Rebounds).Count();
+        ReboundsPercent = ((double)ReboundsHitCount / (double)NumberOfGames) * 100;
+        StateHasChanged();
+    }
+
+    async Task AssistsChanged(ChangeEventArgs e)
+    {
+        Assists = Double.Parse(e.Value.ToString());
+        AssistsHitCount = GamePlayerStatistics.Where(ps => ps.Assists >= Assists).Count();
+        AssistsPercent = ((double)AssistsHitCount / (double)NumberOfGames) * 100;
+        StateHasChanged();
+    }
+
+    async Task PointsChanged(ChangeEventArgs e)
+    {
+        Points = Double.Parse(e.Value.ToString());
+        PointsHitCount = GamePlayerStatistics.Where(ps => ps.Points >= Points).Count();
+        PointsPercent = ((double)PointsHitCount / (double)NumberOfGames) * 100;
+        StateHasChanged();
+    }
+
+    async Task UpdateNumberOfGames(ChangeEventArgs e)
+    {
+        NumberOfGames = Int32.Parse(e.Value.ToString());
+        await UpdatePlayerStatistics();
+    }
+}
+
+<style>
+    :root {
+        --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f);
+        --gray: #818a99;
+        --darkgray: #2c3e50;
+    }
+
+    select {
+        /* Reset Select */
+        appearance: none;
+        outline: 0;
+        border: 0;
+        box-shadow: none;
+        /* Personalize */
+        flex: 1;
+        padding: 0 1em;
+        color: #fff;
+        background-color: var(--gray);
+        background-image: none;
+        cursor: pointer;
+    }
+        /* Remove IE arrow */
+        select::-ms-expand {
+            display: none;
+        }
+    /* Custom Select wrapper */
+    .select {
+        position: relative;
+        display: flex;
+        width: 20em;
+        height: 3em;
+        border-radius: .25em;
+        overflow: hidden;
+    }
+        /* Arrow */
+        .select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 1em;
+            background-color: #818a99;
+            transition: .25s all ease;
+            pointer-events: none;
+        }
+        /* Transition */
+        .select:hover::after {
+            color: #f39c12;
+        }
+
+    .section {
+        scrollbar-width: thin;
+    }
+</style>

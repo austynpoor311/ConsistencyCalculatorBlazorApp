@@ -18,10 +18,7 @@ namespace ConsistencyCalculator.Data.Repositories
 
         public IEnumerable<Player> GetAllPlayers()
         {
-            return _appDbContext.Players
-                .Include(p => p.Injuries)
-                .Include(p => p.Team)
-                .Include(p => p.Position);
+            return _appDbContext.Players;
         }
 
         public Player GetPlayerById(int playerId)

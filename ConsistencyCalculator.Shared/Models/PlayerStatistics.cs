@@ -155,7 +155,7 @@ namespace ConsistencyCalculator.Models
         public string SplitType { get; set; }
 
         [JsonPropertyName("events")]
-        public List<CategoryEvent> Events { get; set; }
+        public List<CategoryEvent> Events { get; set; } = new List<CategoryEvent>();
 
         [JsonPropertyName("totals")]
         public List<string> Totals { get; set; }
@@ -167,7 +167,7 @@ namespace ConsistencyCalculator.Models
         public string EventId { get; set; }
 
         [JsonPropertyName("stats")]
-        public List<string> Stats { get; set; }
+        public List<string> Stats { get; set; } = new List<string>();
     }
 
     public class Stat
@@ -197,7 +197,7 @@ namespace ConsistencyCalculator.Models
         public string DisplayName { get; set; }
 
         [JsonPropertyName("categories")]
-        public List<Category> Categories { get; set; }
+        public List<Category> Categories { get; set; } = new List<Category>();
 
         [JsonPropertyName("summary")]
         public Summary Summary { get; set; }
@@ -230,7 +230,7 @@ namespace ConsistencyCalculator.Models
         public Dictionary<string, PlayerStatisticsGame> Games { get; set; }
 
         [JsonPropertyName("seasonTypes")]
-        public List<SeasonType> SeasonTypes { get; set; }
+        public List<SeasonType> SeasonTypes { get; set; } = new List<SeasonType>();
 
         [JsonPropertyName("glossary")]
         public List<Glossary> Glossary { get; set; }

@@ -30,13 +30,30 @@ namespace ConsistencyCalculator.Data.Repositories
                 .Include(gps => gps.Game)
                 .FirstOrDefault(gps => gps.Player.Id == playerId && gps.Game.Id == gameId);
         }
-        public GamePlayerStatistics GetGamePlayerStatisticsByPlayerId(int playerId)
+        public List<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerId(int playerId)
         {
             return _appDbContext.GamePlayerStatistics
                 .Include(gps => gps.Player)
-                .Include(gps => gps.Game)
-                .FirstOrDefault(gps => gps.Player.Id == playerId);
+                .Include(gps => gps.Game).ThenInclude(g => g.AwayTeam)
+                .Include(gps => gps.Game).ThenInclude(g => g.HomeTeam)
+                .Where(gps => gps.Player.Id == playerId)
+                .OrderByDescending(gps => gps.Game.GameDate)
+                .Take(10)
+                .ToList();
         }
+
+        public List<GamePlayerStatistics> GetTopGamePlayerStatisticsByPlayerId(int playerId, int takeVal)
+        {
+            return _appDbContext.GamePlayerStatistics
+                .Include(gps => gps.Player)
+                .Include(gps => gps.Game).ThenInclude(g => g.AwayTeam)
+                .Include(gps => gps.Game).ThenInclude(g => g.HomeTeam)
+                .Where(gps => gps.Player.Id == playerId)
+                .OrderByDescending(gps => gps.Game.GameDate)
+                .Take(takeVal)
+                .ToList();
+        }
+
         public GamePlayerStatistics GetGamePlayerStatisticsByGameId(int gameId)
         {
             return _appDbContext.GamePlayerStatistics

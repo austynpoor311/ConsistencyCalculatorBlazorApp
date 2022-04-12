@@ -8,11 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\apoor\.nuget\packages\psc.blazor.components.datatable\6.0.9\contentFiles\any\net6.0\wwwroot\css\DataTable.css" />
+    <Content Remove="C:\Users\apoor\.nuget\packages\psc.blazor.components.datatable\6.0.9\contentFiles\any\net6.0\wwwroot\js\DataTable.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.0.2" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3" />
+    <PackageReference Include="PSC.Blazor.Components.DataTable" Version="6.0.9" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="20.1.0.47" />
   </ItemGroup>
 
   <ItemGroup>

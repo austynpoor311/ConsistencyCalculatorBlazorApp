@@ -20,10 +20,16 @@ namespace ConsistencyCalculator.Shared.Services.Data
                 (await _httpClient.GetStreamAsync($"api/gameplayerstatistics"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerId(int id)
+        public async Task<List<GamePlayerStatistics>> GetGamePlayerStatisticsByPlayerId(int id)
         {
-            return await JsonSerializer.DeserializeAsync<GamePlayerStatistics>
+            return await JsonSerializer.DeserializeAsync<List<GamePlayerStatistics>>
                 (await _httpClient.GetStreamAsync($"api/gameplayerstatistics/player/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<List<GamePlayerStatistics>> GetTopGamePlayerStatisticsByPlayerId(int id, int takeVal)
+        {
+            return await JsonSerializer.DeserializeAsync<List<GamePlayerStatistics>>
+                (await _httpClient.GetStreamAsync($"api/gameplayerstatistics/player/take/{id}/{takeVal}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<GamePlayerStatistics> GetGamePlayerStatisticsByGameId(int id)

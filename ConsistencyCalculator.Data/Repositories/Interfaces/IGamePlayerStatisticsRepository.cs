@@ -10,7 +10,8 @@ namespace ConsistencyCalculator.Data.Repositories.Interfaces
     {
         IEnumerable<GamePlayerStatistics> GetAllGamePlayerStatistics();
         GamePlayerStatistics GetGamePlayerStatisticsById(int playerId, int gameId);
-        GamePlayerStatistics GetGamePlayerStatisticsByPlayerId(int playerId);
+        List<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerId(int playerId);
+        List<GamePlayerStatistics> GetTopGamePlayerStatisticsByPlayerId(int playerId, int takeVal);
         GamePlayerStatistics GetGamePlayerStatisticsByGameId(int gameId);
         GamePlayerStatistics AddGamePlayerStatistics(GamePlayerStatistics gameplayerstatistics);
         GamePlayerStatistics UpdateGamePlayerStatistics(GamePlayerStatistics gameplayerstatistics);

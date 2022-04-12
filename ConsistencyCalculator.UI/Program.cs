@@ -1,8 +1,11 @@
 using ConsistencyCalculator.Data.DbContexts;
+using ConsistencyCalculator.Shared.Services.Data;
+using ConsistencyCalculator.Shared.Services.Interfaces.Data;
 using ConsistencyCalculator.UI.Areas.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,19 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+
+builder.Services.AddScoped<HttpClient>(s =>
+{
+    var client = new HttpClient { BaseAddress = new System.Uri("https://localhost:7113/") };
+    return client;
+});
+builder.Services.AddScoped<IPlayerDataService, PlayerDataService>();
+builder.Services.AddScoped<ITeamDataService, TeamDataService>();
+builder.Services.AddScoped<IGameDataService, GameDataService>();
+builder.Services.AddScoped<IInjuryDataService, InjuryDataService>();
+builder.Services.AddScoped<IPositionDataService, PositionDataService>();
+builder.Services.AddScoped<IGamePlayerStatisticsDataService, GamePlayerStatisticsDataService>();
+
 
 var app = builder.Build();
 
