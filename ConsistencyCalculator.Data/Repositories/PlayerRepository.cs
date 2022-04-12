@@ -30,6 +30,16 @@ namespace ConsistencyCalculator.Data.Repositories
                 .FirstOrDefault(p => p.Id == playerId);
         }
 
+        public List<Player> GetPlayersByTeamId(int teamId)
+        {
+            return _appDbContext.Players
+                .Include(p => p.Injuries)
+                .Include(p => p.Team)
+                .Include(p => p.Position)
+                .Where(p => p.Team.Id == teamId)
+                .ToList();
+        }
+
         public Player GetPlayerByRemoteId(string remoteId)
         {
             return _appDbContext.Players

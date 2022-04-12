@@ -10,6 +10,7 @@ namespace ConsistencyCalculator.Data.Repositories.Interfaces
     {
         IEnumerable<Player> GetAllPlayers();
         Player GetPlayerById(int playerId);
+        List<Player> GetPlayersByTeamId(int teamId);
         Player GetPlayerByRemoteId(string remoteId);
         Player AddPlayer(Player player);
         Player UpdatePlayer(Player player);

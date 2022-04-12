@@ -8,6 +8,7 @@ namespace ConsistencyCalculator.Shared.Services.Interfaces.Data
     {
         Task<IEnumerable<Player>> GetAllPlayers();
         Task<Player> GetPlayerById(int playerId);
+        Task<List<Player>> GetPlayersByTeamId(int teamId);
         Task<Player> AddPlayer(Player player);
         Task UpdatePlayer(Player player);
         Task DeletePlayer(int playerId);

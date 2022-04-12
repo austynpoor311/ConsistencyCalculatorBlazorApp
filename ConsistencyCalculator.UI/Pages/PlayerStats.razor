@@ -6,24 +6,51 @@
 
 <PageTitle>Player Stats</PageTitle>
 
-@if (PlayerSelectListItems == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="select mb-3">
-        <select @onchange="PlayerChanged">
-            @foreach (var item in PlayerSelectListItems)
-            {
-                <option value="@item.Value">@item.Text</option>
-            }
-        </select>
+<div class="row">
+    <div class="col-lg-3">
+        @if (TeamSelectListItems == null)
+        {
+        }
+        else
+        {
+            <div class="select mb-3">
+                <select @onchange="TeamChanged">
+                    @foreach (var team in TeamSelectListItems)
+                    {
+                        <option value="@team.Value">@team.Text</option>
+                    }
+                </select>
+            </div>
+        }
     </div>
-}
+    <div class="col-lg-3">
+        @if (PlayerSelectListItems == null)
+        {
+        }
+        else
+        {
+            <div class="select mb-3">
+                <select @onchange="PlayerChanged">
+                    @foreach (var item in PlayerSelectListItems)
+                    {
+                        if (item.Selected)
+                        {
+                            <option value="@item.Value" selected>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+    </div>
+</div>
 
 
-@if (Player == null)
+
+@if (GamePlayerStatistics == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -114,78 +141,6 @@ else
         </div>
     </div>
 
-
-@*    <DataTable TModel="GamePlayerStatistics"
-           Items="GamePlayerStatistics.OrderByDescending(gps => gps.Game.GameDate).ToList()"
-           UsePaging="true"
-           PageSize="@PageSize"
-           UsePageSizeSelector="true"
-           Styles="TableStyle.Striped">
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Game.GameDate"
-                     CustomTitle="Date" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Game.HomeTeam.Name"
-                     CustomTitle="Home Team" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Game.AwayTeam.Name"
-                     CustomTitle="Away Team" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Game.Score"
-                     CustomTitle="Score" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Minutes"
-                     CustomTitle="MIN" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FieldGoalsMade"
-                     CustomTitle="FG" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FieldGoalAttempts"
-                     CustomTitle="FGA" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FieldGoalPercentage"
-                     CustomTitle="FG %" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.ThreePointersMade"
-                     CustomTitle="3P" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.ThreePointAttempts"
-                     CustomTitle="3PA" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.ThreePointPercentage"
-                     CustomTitle="3P %" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FreeThrowsMade"
-                     CustomTitle="FT" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FreeThrowAttempts"
-                     CustomTitle="FTA" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.FreeThrowPercentage"
-                     CustomTitle="FT %" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Rebounds"
-                     CustomTitle="REB" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Assists"
-                     CustomTitle="AST" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Blocks"
-                     CustomTitle="BLK" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Steals"
-                     CustomTitle="STL" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.PlayerFouls"
-                     CustomTitle="PF" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Turnovers"
-                     CustomTitle="TO" />
-        <DataTableColumn TModel="GamePlayerStatistics"
-                     Property="(gps) => gps.Points"
-                     CustomTitle="PTS" />
-
-    </DataTable>*@
 }
 
 
@@ -194,19 +149,24 @@ else
     public IPlayerDataService PlayerDataService { get; set; }
 
     [Inject]
+    public ITeamDataService TeamDataService { get; set; }
+
+    [Inject]
     public IGamePlayerStatisticsDataService GamePlayerStatisticsDataService { get; set; }
 
-    public int PlayerId { get; set; } 
+    public int PlayerId { get; set; }
 
-    public Player Player { get; set; }
+    public int TeamId { get; set; }
 
     public List<Player> Players { get; set; } = new List<Player>();
 
+    public List<Team> Teams { get; set; } = new List<Team>();
+
     public List<GamePlayerStatistics> GamePlayerStatistics { get; set; }
 
-    public GamePlayerStatistics GamePlayerStatistic { get; set; }
-
     public List<SelectListItem> PlayerSelectListItems { get; set; }
+
+    public List<SelectListItem> TeamSelectListItems { get; set; }
 
     public List<SelectListItem> LastGamesItems { get; set; }
 
@@ -244,15 +204,25 @@ else
                 Text = e.ToString()
             }).ToList();
 
-        var players = await PlayerDataService.GetAllPlayers();
-        players = players.OrderBy(p => p.FullName).ToList();
+        Teams = (await TeamDataService.GetAllTeams()).ToList();
+        Teams = Teams.OrderBy(p => p.Name).ToList();
+        TeamId = Teams.Select(t => t.Id).FirstOrDefault();
 
-        PlayerId = players.Select(p => p.Id).FirstOrDefault();
+        Players = (await PlayerDataService.GetPlayersByTeamId(TeamId)).ToList();
+        Players = Players.OrderBy(p => p.FullName).ToList();
+        PlayerId = Players.Select(p => p.Id).FirstOrDefault();
 
-        PlayerSelectListItems = players.Select(p => new SelectListItem
+
+        PlayerSelectListItems = Players.Select(p => new SelectListItem
         {
             Value = p.Id.ToString(),
             Text = p.FullName
+        }).ToList();
+
+        TeamSelectListItems = Teams.Select(t => new SelectListItem
+        {
+            Value = t.Id.ToString(),
+            Text = t.Name
         }).ToList();
 
         UpdatePlayerStatistics();
@@ -261,12 +231,36 @@ else
     async Task PlayerChanged(ChangeEventArgs e)
     {
         PlayerId = Int32.Parse(e.Value.ToString());
+        PlayerSelectListItems = Players.Select(p => new SelectListItem
+        {
+            Value = p.Id.ToString(),
+            Text = p.FullName,
+            Selected = p.Id == PlayerId
+        }).ToList();
         UpdatePlayerStatistics();
     }
+
+    async Task TeamChanged(ChangeEventArgs e)
+    {
+        TeamId = Int32.Parse(e.Value.ToString());
+
+        Players = (await PlayerDataService.GetPlayersByTeamId(TeamId)).ToList();
+        Players = Players.OrderBy(p => p.FullName).ToList();
+        PlayerId = Players.Select(p => p.Id).FirstOrDefault();
+
+        PlayerSelectListItems = Players.Select(p => new SelectListItem
+        {
+            Value = p.Id.ToString(),
+            Text = p.FullName,
+            Selected = p.Id == PlayerId
+        }).ToList();
+        StateHasChanged();
+        UpdatePlayerStatistics();
+    }
+
     async Task UpdatePlayerStatistics()
     {
         GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetTopGamePlayerStatisticsByPlayerId(PlayerId, NumberOfGames)).ToList();
-        Player = await PlayerDataService.GetPlayerById(PlayerId);
         await PointsChanged(new ChangeEventArgs
             {
                 Value = Points
@@ -281,7 +275,6 @@ else
             {
                 Value = Assists
             });
-        StateHasChanged();
     }
 
     async Task ReboundsChanged(ChangeEventArgs e)

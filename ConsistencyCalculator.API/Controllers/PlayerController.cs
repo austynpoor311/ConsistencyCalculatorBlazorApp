@@ -34,6 +34,12 @@ namespace ConsistencyCalculator.Api.Controllers
             return Ok(_playerRepository.GetPlayerById(id));
         }
 
+        [HttpGet("team/{id}")]
+        public IActionResult GetPlayersByTeamId(int id)
+        {
+            return Ok(_playerRepository.GetPlayersByTeamId(id));
+        }
+
         [HttpGet("remote/{id}")]
         public IActionResult GetPlayerByRemoteId(string id)
         {
