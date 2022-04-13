@@ -4,6 +4,7 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Mvc.Rendering
 
+
 <PageTitle>Player Stats</PageTitle>
 
 <div class="row">
@@ -14,7 +15,8 @@
         else
         {
             <div class="select mb-3">
-                <select @onchange="TeamChanged">
+                <label for="team">Team</label>
+                <select @onchange="TeamChanged" id="team">
                     @foreach (var team in TeamSelectListItems)
                     {
                         <option value="@team.Value">@team.Text</option>
@@ -30,8 +32,33 @@
         else
         {
             <div class="select mb-3">
-                <select @onchange="PlayerChanged">
+                <label for="player">Player</label><br />
+                <select @onchange="PlayerChanged" id="player">
                     @foreach (var item in PlayerSelectListItems)
+                    {
+                        if (item.Selected)
+                        {
+                            <option value="@item.Value" selected>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+    </div>
+        <div class="col-lg-3">
+        @if (OpposingTeamSelectListItems == null)
+        {
+        }
+        else
+        {
+            <div class="select mb-3">
+                <label for="opposingteams">See Stats Against</label>
+                <select @onchange="OpposingTeamChanged" id="opposingteams">
+                    @foreach (var item in OpposingTeamSelectListItems)
                     {
                         if (item.Selected)
                         {
@@ -119,17 +146,47 @@ else
     </div>
 
     <div class="mb-3">
-        <label for="rebounds">Rebounds:</label>
-        <input value="@Rebounds" @onchange="ReboundsChanged" />
-
-        <label for="assists">Assists:</label>
-        <input value="@Assists" @onchange="AssistsChanged" />
-
-        <label for="points">Points:</label>
-        <input value="@Points" @onchange="PointsChanged" />
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="row mx-2">
+                    <label for="rebounds">Rebounds:</label>
+                    <input value="@Rebounds" @onchange="ReboundsChanged" />
+                </div>
+                <div class="row mx-2">
+                    @ReboundsPercent.ToString("0.0")% (@ReboundsHitCount / L @NumberOfGames)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="row mx-2">
+                    <label for="assists">Assists:</label>
+                    <input value="@Assists" @onchange="AssistsChanged" />
+                </div>
+                <div class="row mx-2">
+                    @AssistsPercent.ToString("0.0")% (@AssistsHitCount / L @NumberOfGames)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="row mx-2">
+                    <label for="points">Points:</label>
+                    <input value="@Points" @onchange="PointsChanged" />
+                </div>
+                <div class="row mx-2">
+                    @PointsPercent.ToString("0.0")% (@PointsHitCount / L @NumberOfGames)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="row mx-2">
+                    <label for="threes">Threes:</label>
+                    <input value="@Threes" @onchange="ThreesChanged" />
+                </div>
+                <div class="row mx-2">
+                    @ThreesPercent.ToString("0.0")% (@ThreesHitCount / L @NumberOfGames)
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="col-lg-6">
+    @*<div class="col-lg-6">
         <div class="row">
             Rebounds: @ReboundsPercent.ToString("0.0")% (@ReboundsHitCount / L @NumberOfGames)
         </div>
@@ -139,8 +196,10 @@ else
         <div class="row">
             Points: @PointsPercent.ToString("0.0")% (@PointsHitCount / L @NumberOfGames)
         </div>
-    </div>
-
+        <div class="row">
+            Threes: @ThreesPercent.ToString("0.0")% (@ThreesHitCount / L @NumberOfGames)
+        </div>
+    </div>*@
 }
 
 
@@ -158,6 +217,8 @@ else
 
     public int TeamId { get; set; }
 
+    public int OpposingTeamId { get; set; } = 0;
+
     public List<Player> Players { get; set; } = new List<Player>();
 
     public List<Team> Teams { get; set; } = new List<Team>();
@@ -168,6 +229,8 @@ else
 
     public List<SelectListItem> TeamSelectListItems { get; set; }
 
+    public List<SelectListItem> OpposingTeamSelectListItems { get; set; }
+
     public List<SelectListItem> LastGamesItems { get; set; }
 
     public double Points { get; set; } = 20.5;
@@ -176,17 +239,23 @@ else
 
     public double Rebounds { get; set; } = 8.5;
 
+    public double Threes { get; set; } = 1.5;
+
     public double AssistsPercent { get; set; }
 
     public double ReboundsPercent { get; set; }
 
     public double PointsPercent { get; set; }
 
+    public double ThreesPercent { get; set; }
+
     public int AssistsHitCount { get; set; }
 
     public int ReboundsHitCount { get; set; }
 
     public int PointsHitCount { get; set; }
+
+    public int ThreesHitCount { get; set; }
 
     [Parameter]
     public string Value { get; set; }
@@ -225,6 +294,20 @@ else
             Text = t.Name
         }).ToList();
 
+        OpposingTeamSelectListItems = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "0",
+                Text = "All"
+            }
+        };
+        OpposingTeamSelectListItems.AddRange(Teams.Where(t => t.Id != TeamId).Select(t => new SelectListItem
+        {
+            Value = t.Id.ToString(),
+            Text = t.Name
+        }).ToList());
+
         UpdatePlayerStatistics();
     }
 
@@ -244,6 +327,9 @@ else
     {
         TeamId = Int32.Parse(e.Value.ToString());
 
+        //default games back to 10
+        NumberOfGames = 10;
+
         Players = (await PlayerDataService.GetPlayersByTeamId(TeamId)).ToList();
         Players = Players.OrderBy(p => p.FullName).ToList();
         PlayerId = Players.Select(p => p.Id).FirstOrDefault();
@@ -254,13 +340,61 @@ else
             Text = p.FullName,
             Selected = p.Id == PlayerId
         }).ToList();
+
+        OpposingTeamId = 0;
+        OpposingTeamSelectListItems = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "0",
+                Text = "All",
+                Selected = true
+            }
+        };
+        OpposingTeamSelectListItems.AddRange(Teams.Where(t => t.Id != TeamId).Select(ot => new SelectListItem
+        {
+              Value = ot.Id.ToString(),
+              Text = ot.Name
+        }).ToList());
+
+        StateHasChanged();
+        UpdatePlayerStatistics();
+    }
+
+    async Task OpposingTeamChanged(ChangeEventArgs e)
+    {
+        OpposingTeamId = Int32.Parse(e.Value.ToString());
+
+        OpposingTeamSelectListItems = new List<SelectListItem>()
+        {
+            new SelectListItem
+            {
+                Value = "0",
+                Text = "All"
+            }
+        };
+        OpposingTeamSelectListItems.AddRange(Teams.Where(t => t.Id != TeamId).Select(ot => new SelectListItem
+        {
+              Value = ot.Id.ToString(),
+              Text = ot.Name,
+              Selected = ot.Id == OpposingTeamId
+        }).ToList());        
+        GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetGamePlayerStatisticsByPlayerAgainstTeam(PlayerId, OpposingTeamId)).ToList();
         StateHasChanged();
         UpdatePlayerStatistics();
     }
 
     async Task UpdatePlayerStatistics()
     {
-        GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetTopGamePlayerStatisticsByPlayerId(PlayerId, NumberOfGames)).ToList();
+        if (OpposingTeamId != 0)
+        {
+            GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetGamePlayerStatisticsByPlayerAgainstTeam(PlayerId, OpposingTeamId)).ToList();
+            NumberOfGames = GamePlayerStatistics.Count;
+        }
+        else
+        {
+            GamePlayerStatistics = (await GamePlayerStatisticsDataService.GetTopGamePlayerStatisticsByPlayerId(PlayerId, NumberOfGames)).ToList();
+        }
         await PointsChanged(new ChangeEventArgs
             {
                 Value = Points
@@ -274,6 +408,10 @@ else
         await AssistsChanged(new ChangeEventArgs
             {
                 Value = Assists
+            });
+        await ThreesChanged(new ChangeEventArgs
+            {
+                Value = Threes
             });
     }
 
@@ -298,6 +436,14 @@ else
         Points = Double.Parse(e.Value.ToString());
         PointsHitCount = GamePlayerStatistics.Where(ps => ps.Points >= Points).Count();
         PointsPercent = ((double)PointsHitCount / (double)NumberOfGames) * 100;
+        StateHasChanged();
+    }
+
+    async Task ThreesChanged(ChangeEventArgs e)
+    {
+        Threes = Double.Parse(e.Value.ToString());
+        ThreesHitCount = GamePlayerStatistics.Where(ps => ps.ThreePointersMade >= Threes).Count();
+        ThreesPercent = ((double)ThreesHitCount / (double)NumberOfGames) * 100;
         StateHasChanged();
     }
 

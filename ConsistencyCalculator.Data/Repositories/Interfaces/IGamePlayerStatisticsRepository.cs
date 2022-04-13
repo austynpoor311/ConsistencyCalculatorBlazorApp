@@ -12,6 +12,7 @@ namespace ConsistencyCalculator.Data.Repositories.Interfaces
         GamePlayerStatistics GetGamePlayerStatisticsById(int playerId, int gameId);
         List<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerId(int playerId);
         List<GamePlayerStatistics> GetTopGamePlayerStatisticsByPlayerId(int playerId, int takeVal);
+        List<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerAgainstTeam(int playerId, int opposingTeamId);
         GamePlayerStatistics GetGamePlayerStatisticsByGameId(int gameId);
         GamePlayerStatistics AddGamePlayerStatistics(GamePlayerStatistics gameplayerstatistics);
         GamePlayerStatistics UpdateGamePlayerStatistics(GamePlayerStatistics gameplayerstatistics);

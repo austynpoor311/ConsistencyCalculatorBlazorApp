@@ -9,6 +9,7 @@ namespace ConsistencyCalculator.Shared.Services.Interfaces.Data
         Task<IEnumerable<GamePlayerStatistics>> GetAllGamePlayerStatistics();
         Task<List<GamePlayerStatistics>> GetGamePlayerStatisticsByPlayerId(int playerId);
         Task<List<GamePlayerStatistics>> GetTopGamePlayerStatisticsByPlayerId(int playerId, int takeVal);
+        Task<List<GamePlayerStatistics>> GetGamePlayerStatisticsByPlayerAgainstTeam(int playerId, int opposingTeamId);
         Task<GamePlayerStatistics> GetGamePlayerStatisticsByGameId(int gameId);
         Task<GamePlayerStatistics> GetGamePlayerStatisticsById(int playerId, int gameId);
         Task<GamePlayerStatistics> AddGamePlayerStatistics(GamePlayerStatistics gamePlayerStatistics);
