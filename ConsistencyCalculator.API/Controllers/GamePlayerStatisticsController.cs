@@ -47,6 +47,12 @@ namespace ConsistencyCalculator.Api.Controllers
             return Ok(_gamePlayerStatisticsRepository.GetTopGamePlayerStatisticsByPlayerId(id, takeVal));
         }
 
+        [HttpGet("recent/{takeVal}")]
+        public IActionResult GetTopRecentGames(int takeVal)
+        {
+            return Ok(_gamePlayerStatisticsRepository.GetTopRecentGames(takeVal));
+        }
+
         [HttpGet("player/opposing/{id}/{opposingTeamId}")]
         public IActionResult GetGamePlayerStatisticsByPlayerAgainstTeam(int id, int opposingTeamId)
         {

@@ -54,6 +54,17 @@ namespace ConsistencyCalculator.Data.Repositories
                 .ToList();
         }
 
+        public List<GamePlayerStatistics> GetTopRecentGames(int takeVal)
+        {
+            return _appDbContext.GamePlayerStatistics
+                .Include(gps => gps.Player)
+                .Include(gps => gps.Game).ThenInclude(g => g.AwayTeam)
+                .Include(gps => gps.Game).ThenInclude(g => g.HomeTeam)
+                .OrderByDescending(gps => gps.Game.GameDate)
+                .Take(takeVal)
+                .ToList();
+        }
+
         public List<GamePlayerStatistics> GetGamePlayerStatisticsByPlayerAgainstTeam(int playerId, int opposingTeamId)
         {
             return _appDbContext.GamePlayerStatistics
