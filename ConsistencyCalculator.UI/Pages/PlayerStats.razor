@@ -460,6 +460,7 @@
 
     async Task UpdateNumberOfGames(ChangeEventArgs e)
     {
+        IsLoading = true;
         NumberOfGames = Int32.Parse(e.Value.ToString());
         await UpdatePlayerStatistics();
     }
@@ -519,3 +520,5 @@
         scrollbar-width: thin;
     }
 </style>
+
+
