@@ -22,7 +22,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 builder.Services.AddScoped<HttpClient>(s =>
 {
-    var client = new HttpClient { BaseAddress = new System.Uri("https://localhost:7113/") };
+    var client = new HttpClient { BaseAddress = new System.Uri("https://consistencycalculatorapi.azurewebsites.net/") };
     return client;
 });
 builder.Services.AddScoped<IPlayerDataService, PlayerDataService>();
