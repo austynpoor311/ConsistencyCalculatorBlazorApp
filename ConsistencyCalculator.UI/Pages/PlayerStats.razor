@@ -1,4 +1,4 @@
-﻿@page "/playerstats"
+﻿@page "/"
 @using ConsistencyCalculator.Models.Entities
 @using ConsistencyCalculator.Shared.Services.Interfaces.Data
 @using System.Linq
@@ -150,7 +150,7 @@
                 <div class="col-lg-3">
                     <div class="row mx-2">
                         <label class="px-0" for="rebounds">Rebounds:</label>
-                        <input value="@Rebounds" @onchange="ReboundsChanged" />
+                        <input type="number" value="@Rebounds" @onchange="ReboundsChanged" />
                     </div>
                     <div class="row mx-2 mt-1">
                         <strong>@ReboundsPercent.ToString("0.0")% (@ReboundsHitCount / L @NumberOfGames)</strong>
@@ -159,7 +159,7 @@
                 <div class="col-lg-3">
                     <div class="row mx-2">
                         <label for="assists">Assists:</label>
-                        <input value="@Assists" @onchange="AssistsChanged" />
+                        <input type="number" value="@Assists" @onchange="AssistsChanged" />
                     </div>
                     <div class="row mx-2 mt-1">
                         <strong>@AssistsPercent.ToString("0.0")% (@AssistsHitCount / L @NumberOfGames)</strong>
@@ -168,7 +168,7 @@
                 <div class="col-lg-3">
                     <div class="row mx-2">
                         <label for="points">Points:</label>
-                        <input value="@Points" @onchange="PointsChanged" />
+                        <input type="number" value="@Points" @onchange="PointsChanged" />
                     </div>
                     <div class="row mx-2 mt-1">
                         <strong>@PointsPercent.ToString("0.0")% (@PointsHitCount / L @NumberOfGames)</strong>
@@ -177,7 +177,7 @@
                 <div class="col-lg-3">
                     <div class="row mx-2">
                         <label for="threes">Threes:</label>
-                        <input value="@Threes" @onchange="ThreesChanged" />
+                        <input type="number" value="@Threes" @onchange="ThreesChanged" />
                     </div>
                     <div class="row mx-2 mt-1">
                         <strong>@ThreesPercent.ToString("0.0")% (@ThreesHitCount / L @NumberOfGames)</strong>
